@@ -21,7 +21,6 @@
     "node-rpsls": "./bin/rpsls-cli.js"
   },
   "dependencies": {
-    "minimist": "^1.2.5"
+    "minimist": "^1.2.8"
   }
 }
-
