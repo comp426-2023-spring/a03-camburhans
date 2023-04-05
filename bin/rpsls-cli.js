@@ -21,3 +21,20 @@ if (args.h || args.help) {
     );
     process.exit(0);
 }
+
+if (args.r || args.rules) {
+    console.log(
+        `Rules for the Lizard-Spock Espansion of Rock Paper Scissors:
+        - Scissors CUTS Paper
+        - Paper COVERS Rock
+        - Rock SMOOSHES Lizard
+        - Lizard POISONS Spock
+        - Spock SMASHES Scissors
+        - Scissors DECAPITATES Lizard
+        - Lizard EATS Paper
+        - Paper DISPROVES Spock
+        - Spock VAPORIZES Rock
+        - Rock CRUSHES Scissors`
+    );
+    process.exit(0);
+}
