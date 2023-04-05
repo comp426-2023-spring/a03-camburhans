@@ -1,67 +1,56 @@
 #!/usr/bin/env node
-import minimist from "minimist";
-import { rpsls } from "../lib/rpsls.js";
 
-let args = minimist(process.argv.slice(2));
+import minimist from "minimist";
+import rpsls from "../lib/rpsls.js";
+
+const args = minimist(process.argv.slice(2));
+
+const help = `Usage: node-rpsls [SHOT]
+Play the Lizard-Spock Expansion of Rock Paper Scissors (RPSLS)!
+
+  -h, --help        display this help message and exit
+  -r, --rules       display the rules and exit
+
+Examples:
+  node-rpsls        Return JSON with single player RPSLS result.
+                    e.g. {"player":"rock"}
+  node-rpsls rock   Return JSON with results for RPSLS played against a simulated opponent.
+                    e.g {"player":"rock","opponent":"Spock","result":"lose"}`;
+
+const rules = `Rules for the Lizard-Spock Expansion of Rock Paper Scissors:
+
+- Scissors CUTS Paper
+- Paper COVERS Rock
+- Rock SMOOSHES Lizard
+- Lizard POISONS Spock
+- Spock SMASHES Scissors
+- Scissors DECAPITATES Lizard
+- Lizard EATS Paper
+- Paper DISPROVES Spock
+- Spock VAPORIZES Rock
+- Rock CRUSHES Scissors`;
 
 if (args.h || args.help) {
-    console.log('Usage: node-rpsls [SHOT]' +
-    '\nPlay the Lizard-Spock Expansion of Rock Paper Scissors (RPSLS)!' +
-    '\n\n\t-h, --help      display this help message and exit' +
-    '\n\t-r, --rules     display the rules and exit' +
-    '\n\nExamples:' +
-    '\n\tnode-rpsls        Return JSON with single player RPSLS result.' +
-                      '\n\t\te.g. {"player":"rock"}'+
-    '\n\tnode-rpsls rock   Return JSON with results for RPSLS played against a simulated opponent.' +
-                      '\n\t\te.g {"player":"rock","opponent":"Spock","result":"lose"}');
-    process.exit(0);
-
+    console.log(help);
+    process.exit(1);
 }
 
 if (args.r || args.rules) {
-    console.log('Rules for the Lizard-Spock Espansion of Rock Paper Scissors:' +
-    '\n\n\t- Scissors CUTS Paper' +
-    '\n\t- Paper COVERS Rock' +
-    '\n\t- Rock SMOOSHES Lizard' +
-    '\n\t- Lizard POISONS Spock' +
-    '\n\t- Spock SMASHES Scissors' +
-    '\n\t- Scissors DECAPITATES Lizard' +
-    '\n\t- Lizard EATS Paper' +
-    '\n\t- Paper DISPROVES Spock' +
-    '\n\t- Spock VAPORIZES Rock' +
-    '\n\t- Rock CRUSHES Scissors');
-    process.exit(0);
+    console.log(rules);
+    process.exit(1);
 }
 
-let move = args._[0]
-let output = rpsls(move)
+const arr = args._
 
-if (output === 'error') {
-    console.error(`${move} is out of range.`);
-
-    console.log('Usage: node-rpsls [SHOT]' +
-    '\nPlay the Lizard-Spock Expansion of Rock Paper Scissors (RPSLS)!' +
-    '\n\n\t-h, --help      display this help message and exit' +
-    '\n\t-r, --rules     display the rules and exit' +
-    '\n\nExamples:' +
-    '\n\tnode-rpsls        Return JSON with single player RPSLS result.' +
-                      '\n\t\te.g. {"player":"rock"}'+
-    '\n\tnode-rpsls rock   Return JSON with results for RPSLS played against a simulated opponent.' +
-                      '\n\t\te.g {"player":"rock","opponent":"Spock","result":"lose"}');
-
-    console.log('Rules for the Lizard-Spock Expansion of Rock Paper Scissors:' +
-    '\n\n\t Scissors CUTS Paper' +
-    '\n\t Paper COVERS Rock' +
-    '\n\t Rock SMOOSHES Lizard' +
-    '\n\t Lizard POISONS Spock' +
-    '\n\t Spock SMASHES Scissors' +
-    '\n\t Scissors DECAPITATES Lizard' +
-    '\n\t Lizard EATS Paper' +
-    '\n\t Paper DISPROVES Spock' +
-    '\n\t Spock VAPORIZES Rock' +
-    '\n\t Rock CRUSHES Scissors');
-
-    process.exit(1);
+if (arr.length != 0) {
+    let choice = arr[0].toLocaleLowerCase();
+    if (["rock", "paper", "scissors", "lizard", "spock"].includes(choice)) {
+        console.log(rpsls(choice));
+    } else {
+        console.log(rules);
+        console.log(help);
+        process.exit(0);
+    }
 } else {
-    console.log(JSON.stringify(output));
+    console.log(rpsls());
 }
