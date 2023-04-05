@@ -1,37 +1,53 @@
 #!/usr/bin/env node
-
 import minimist from "minimist";
+import { rps } from "../lib/rpsls.js";
 
-const args = minimist(process.argv.slice(2), {
-    alias: {
-        r: "rules"
-    }
-});
+let args = minimist(process.argv.slice(2));
 
-import { RPS, help_RPS, rules_RPS } from "../lib/rpsls.js";
-
+//help
 if (args.h || args.help) {
-    help_RPS();
-    process.exit();
-} else if (args.r || args.rules) {
-    rules_RPS();
-    process.exit();
+    console.log('Usage: node-rps [SHOT]' +
+    '\nPlay Rock Paper Scissors (RPS)' +
+    '\n\n\t-h, --help      display this help message and exit' +
+    '\n\t-r, --rules     display the rules and exit' +
+    '\n\nExamples:' +
+    '\n\tnode-rps        Return JSON with single player RPS result.' +
+                      '\n\t\te.g. {"player":"rock"}'+
+    '\n\tnode-rps rock   Return JSON with results for RPS played against a simulated opponent.' +
+                      '\n\t\te.g {"player":"rock","opponent":"scissors","result":"win"}');
+    process.exit(0);
+} 
+
+//rules
+if (args.r || args.rules) {
+    console.log('Rules for Rock Paper Scissors:' +
+    '\n\n\t- Scissors CUTS Paper' +
+    '\n\t- Paper COVERS Rock' +
+    '\n\t- Rock CRUSHES Scissors');
+    process.exit(0);
+} 
+
+let move = args._[0]
+let output = rps(move)
+
+if (output === 'error') {
+    console.error(`${move} is not real.`);
+
+    console.log('Usage: node-rps [SHOT]' +
+    '\nPlay Rock Paper Scissors (RPS)' +
+    '\n\n\t-h, --help      display this help message and exit' +
+    '\n\t-r, --rules     display the rules and exit' +
+    '\n\nExamples:' +
+    '\n\tnode-rps        Return JSON with single player RPS result.' +
+                      '\n\t\te.g. {"player":"rock"}'+
+    '\n\tnode-rps rock   Return JSON with results for RPS played against a simulated opponent.' +
+                      '\n\t\te.g {"player":"rock","opponent":"scissors","result":"win"}');
+
+    console.log('Rules for Rock Paper Scissors:' +
+    '\n\n\t- Scissors CUTS Paper' +
+    '\n\t- Paper COVERS Rock' +
+    '\n\t- Rock CRUSHES Scissors');
+    process.exit(1);
 } else {
-    var playerMove = args._[0];
-
-    if (!playerMove) {
-        var result = { "player": "rock" };
-        console.log(JSON.stringify(result));
-        process.exit();
-    }
-
-    playerMove = playerMove.toLowerCase();
-
-    var result = RPS(playerMove);
-    
-    if (!(typeof result == "undefined")) {
-        console.log(JSON.stringify(result));
-        process.exit();
-    }
-    process.exit();
+    console.log(JSON.stringify(output));
 }
