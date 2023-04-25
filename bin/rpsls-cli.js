@@ -1,56 +1,51 @@
-#!/usr/bin/env node
+#!/usr/bin/evn node
 
-import { rps } from "../lib/rpsls.js"
+import { rpsls } from '../lib/rpsls.js';
 import minimist from 'minimist';
 
-var args = minimist(process.argv.slice(2));
+const args = minimist(process.argv.slice(2));
 
-function print_help() {
-    console.log(`Usage: node-rpsls [SHOT]
-    Play the Lizard-Spock Expansion of Rock Paper Scissors (RPSLS)!
-    
-      -h, --help        display this help message and exit
-      -r, --rules       display the rules and exit
-    
-    Examples:
-      node-rpsls        Return JSON with single player RPSLS result.
-                        e.g. {"player":"rock"}
-      node-rpsls rock   Return JSON with results for RPSLS played against a simulated opponent.
-                        e.g {"player":"rock","opponent":"Spock","result":"lose"}`);
+function help_message() {
+	console.log("Usage: node-rpsls [SHOT]");
+	console.log("Play the Lizard-Spock Expansion of Rock Paper Scissors (RPSLS)!");
+	console.log("");
+	console.log("  -h, --help	display this help message and exit");
+	console.log("  -r, --rule	display the rules and exit");
+	console.log("");
+	console.log("Examples:");
+	console.log("  node-rpsls	Return JSON with single player RPSLS result.");
+	console.log("			e.g. {'player':'rock'}");
+	console.log("  node-rpsls rock	Return JSON with results for RPSLS played against a simulated opponent.");
+	console.log("			e.g. {'Player':'rock','opponent':'Spock','result':'lose'}");
 }
 
-function print_rules() {
-    console.log(`Rules for the Lizard-Spock Expansion of Rock Paper Scissors:
-    - Scissors CUTS Paper
-    - Paper COVERS Rock
-    - Rock SMOOSHES Lizard
-    - Lizard POISONS Spock
-    - Spock SMASHES Scissors
-    - Scissors DECAPITATES Lizard
-    - Lizard EATS Paper
-    - Paper DISPROVES Spock
-    - Spock VAPORIZES Rock
-    - Rock CRUSHES Scissors`);
+function rules_message() {
+	console.log("  - Scissors CUTS Paper");
+	console.log("  - Paper COVERS Rock");
+	console.log("  - Rock SMOOSHES Scissors");
+	console.log("  - Lizard POISONS Spock");
+	console.log("  - Spock SMASHES Scissors");
+	console.log("  - Scissors DECAPITATES Lizard");
+	console.log("  - Lizard EATS Paper");
+	console.log("  - Paper DISPROVES Spock");
+	console.log("  - Spock VAPORIZES Rock");
+	console.log("  - Rock CRUSHES Scissors");
 }
 
 if (args.h || args.help) {
-    print_help();
-    process.exit(0);
+	help_message();
+	process.exit(0);
+}
+else if (args.r || args.rule) {
+	rules_message();
+	process.exit(0);
 }
 
-if (args.r || args.rules) {
-    print_rules();
-    process.exit(0);
-}
-
-let player_shot = args._[0];
-
+let player_input = args._[0];
 try {
-    console.log(JSON.stringify(rps(player_shot)));
-    process.exit(0);
+	console.log(JSON.stringify(rpsls(player_input)));
 }
-catch (e) {
-    print_help();
-    print_rules();
-    process.exit(0);
+catch(error) {
+	help_message();
+	rules_message();
 }
