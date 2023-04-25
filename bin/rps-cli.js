@@ -1,45 +1,54 @@
-#!/usr/bin/env node
+#!/usr/bin/env node 
 
-import { rps } from '../lib/rpsls.js';
 import minimist from 'minimist';
 
+
+import { rps } from "../lib/rpsls.js";
+
+
 const args = minimist(process.argv.slice(2));
-
-function help_message() {
-	console.log("Usage: node-rps [SHOT]");
-	console.log("Play Rock Paper Scissors (RPS)");
-	console.log("");
-	console.log("  -h, --help	display this help message and exit");
-	console.log("  -r, --rule	display the rules and exit");
-	console.log("");
-	console.log("Examples:");
-	console.log("  node-rps		Return JSON with single player RPS result.");
-	console.log("			e.g. {'player':'rock'}");
-	console.log("  node-rps rock	Return JSON with results for RPS played against a simulated opponent.");
-	console.log("			e.g. {'player':'rock','opponent':'scissors', 'result':'win'}");
-}
-function rules_message() {
-	console.log("Rules for Rock Paper Scissors");
-	console.log("");
-	console.log("  - Scissors CUTS Paper");
-	console.log("  - Paper COVERS Rock");
-	console.log("  - Rock CRUSHES Scissors");
+export function help()
+{
+  console.log('Usage: node rps.js [SHOT]\n');
+  console.log('Play Rock Paper Scissors (RPS)\n');
+  console.log('Options:');
+  console.log('-h, --help  display this help message and exit');
+  console.log('-r, --rules display the rules and exit\n');
+  console.log('Examples:');
+  console.log('node rps.js                  Return JSON with single player RPS result.');
+  console.log('                             e.g. {"player":"rock"}');
+  console.log('node rps.js rock             Return JSON with results for RPS played against a simulated opponent.');
+  console.log('                             e.g {"player":"rock","opponent":"scissors","result":"win"}');
+ 
 }
 
-if (args.h || args.help) {
-	help_message();
-	process.exit(0);
-}
-else if (args.r || args.rule) {
-	rules_message();
-	process.exit(0);
+export function rules()
+{
+  console.log('  Rules for Rock Paper Scissors:');
+  console.log('- Scissors CUTS Paper');
+  console.log('- Paper COVERS Rock');
+  console.log('- Rock CRUSHES Scissors');
+ 
 }
 
-let player_input = args._[0];
-try {
-	console.log(JSON.stringify(rps(player_input)));
+if (args.h || args.help) 
+{
+  help();
 }
-catch(error) {
-	help_message();
-	rules_message();
+
+else if (args.r || args.rules)
+{
+  rules();
+  process.exit(0);
+}
+
+else {
+  try {
+    let result = rps(args._[0]);
+    console.log(JSON.stringify(result));
+  } catch (error) {
+    console.error(`${args._[0]} is out of range.`);
+    console.log(help());
+    console.log(rules());
+  }
 }
